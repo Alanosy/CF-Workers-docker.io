@@ -417,7 +417,7 @@ async function searchInterface() {
 export default {
 	
 	async fetch(request, env, ctx) {
-		const url = new URL(request.url);
+		let url = new URL(request.url);
 
 		// ==============================================
 		// 【核心安全锁】密码验证，无密码直接拒绝
