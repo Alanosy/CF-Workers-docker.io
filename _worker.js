@@ -5,6 +5,9 @@ let hub_host = 'registry-1.docker.io';
 // Docker认证服务器地址
 const auth_url = 'https://auth.docker.io';
 
+// 3. 【开启密码保护】设置你自己的密码，只有你能用
+const ACCESS_TOKEN = "ljKMpzApziupgqCu";  // 👈 改成你自己的密码！
+
 let 屏蔽爬虫UA = ['netcraft'];
 
 // 根据主机名选择对应的上游地址
