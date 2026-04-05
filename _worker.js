@@ -6,7 +6,7 @@ let hub_host = 'registry-1.docker.io';
 const auth_url = 'https://auth.docker.io';
 
 // 3. 【开启密码保护】设置你自己的密码，只有你能用
-const ACCESS_TOKEN = "ljKMpzApziupgqCu";  // 👈 改成你自己的密码！
+const ACCESS_TOKEN = "mypassword123456";  // 👈 改成你自己的密码！
 
 let 屏蔽爬虫UA = ['netcraft'];
 
@@ -415,10 +415,25 @@ async function searchInterface() {
 }
 
 export default {
+	
 	async fetch(request, env, ctx) {
+		const url = new URL(request.url);
+
+		// ==============================================
+		// 【核心安全锁】密码验证，无密码直接拒绝
+		// ==============================================
+		const token = url.searchParams.get('token');
+		if (!token || token !== ACCESS_TOKEN) {
+			return new Response('Unauthorized', { status: 401 });
+		}
+
+		// ==============================================
+		// 【强制固定上游】永远只走 docker.io，关闭多仓库
+		// ==============================================
+		hub_host = 'registry-1.docker.io';
 		const getReqHeader = (key) => request.headers.get(key); // 获取请求头
 
-		let url = new URL(request.url); // 解析请求URL
+		// let url = new URL(request.url); // 解析请求URL
 		const userAgentHeader = request.headers.get('User-Agent');
 		const userAgent = userAgentHeader ? userAgentHeader.toLowerCase() : "null";
 		if (env.UA) 屏蔽爬虫UA = 屏蔽爬虫UA.concat(await ADD(env.UA));
